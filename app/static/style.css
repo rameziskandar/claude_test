@@ -457,7 +457,27 @@ body {
 /* ── Responsive ───────────────────────────────────────────── */
 @media (max-width: 600px) {
   .header-inner { flex-direction: column; align-items: flex-start; gap: 6px; }
-  .tagline { border-left: none; padding-left: 0; }
-  .panel, .review-panel { padding: 20px 18px; }
-  .main { padding: 0 16px 48px; margin-top: 24px; }
+  .tagline { border-left: none; padding-left: 0; font-size: 0.8rem; }
+  .panel, .review-panel { padding: 20px 16px; }
+  .main { padding: 0 12px 48px; margin-top: 20px; }
+
+  /* Bigger tap targets */
+  .btn { min-height: 44px; }
+  .btn-primary { font-size: 1rem; }
+  .btn-sm { min-height: 36px; padding: 6px 14px; }
+  .file-remove { padding: 6px; }
+
+  /* File list wraps better */
+  .file-item { flex-wrap: wrap; gap: 6px; }
+  .file-size { flex-basis: 100%; padding-left: 44px; font-size: 0.72rem; }
+
+  /* Review header stacks */
+  .review-header { flex-direction: column; align-items: flex-start; }
+  .review-actions { width: 100%; justify-content: flex-start; flex-wrap: wrap; }
+
+  /* Slightly larger body text for reading */
+  .review-body { font-size: 1rem; line-height: 1.7; }
+
+  /* Dropzone compacted */
+  .dropzone { padding: 28px 16px; }
 }
