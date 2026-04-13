@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Literature Review Tool</title>
+  <link rel="stylesheet" href="/static/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div class="app">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-inner">
+        <div class="logo">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="28" height="28" rx="6" fill="url(#grad)"/>
+            <path d="M7 8h14M7 12h10M7 16h12M7 20h8" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+            <defs>
+              <linearGradient id="grad" x1="0" y1="0" x2="28" y2="28" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#6366f1"/>
+                <stop offset="1" stop-color="#8b5cf6"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <span>LitReview AI</span>
+        </div>
+        <p class="tagline">Upload research papers — get a synthesized literature review</p>
+      </div>
+    </header>
+
+    <main class="main">
+      <!-- Upload Panel -->
+      <section class="panel upload-panel" id="uploadPanel">
+        <h2 class="panel-title">1. Upload Papers</h2>
+
+        <!-- Drop zone -->
+        <div class="dropzone" id="dropzone">
+          <div class="dropzone-icon">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+              <path d="M20 26V14M14 20l6-6 6 6" stroke="#6366f1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M10 30a6 6 0 01-2-11.66A8 8 0 0126.9 14a6 6 0 012.1 11.66" stroke="#94a3b8" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <p class="dropzone-text">Drop PDF files here</p>
+          <p class="dropzone-sub">or</p>
+          <label class="btn btn-outline" for="fileInput">Choose Files</label>
+          <input type="file" id="fileInput" multiple accept=".pdf" hidden />
+        </div>
+
+        <!-- File list -->
+        <ul class="file-list" id="fileList" hidden></ul>
+
+        <!-- Focus field -->
+        <div class="focus-field">
+          <label class="field-label" for="focusInput">
+            Research focus <span class="optional">(optional)</span>
+          </label>
+          <input
+            type="text"
+            id="focusInput"
+            class="text-input"
+            placeholder="e.g. deep learning for medical imaging, climate change adaptation strategies"
+          />
+        </div>
+
+        <!-- Model selector -->
+        <div class="model-field">
+          <label class="field-label" for="modelSelect">Model</label>
+          <select id="modelSelect" class="select-input">
+            <option value="claude-sonnet-4-6">Claude Sonnet 4.6 (recommended)</option>
+            <option value="claude-opus-4-6">Claude Opus 4.6 (highest quality)</option>
+            <option value="claude-haiku-4-5-20251001">Claude Haiku 4.5 (fastest)</option>
+          </select>
+        </div>
+
+        <button class="btn btn-primary" id="generateBtn" disabled>
+          <span class="btn-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M8 1v6M8 1L5 4M8 1l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M2 9v4a1 1 0 001 1h10a1 1 0 001-1V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </span>
+          Generate Literature Review
+        </button>
+      </section>
+
+      <!-- Review Output -->
+      <section class="panel review-panel" id="reviewPanel" hidden>
+        <div class="review-header">
+          <h2 class="panel-title">Literature Review</h2>
+          <div class="review-actions">
+            <span class="status-badge" id="statusBadge">
+              <span class="status-dot generating"></span>
+              Generating...
+            </span>
+            <button class="btn btn-sm btn-outline" id="copyBtn" hidden>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <rect x="4" y="4" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.4"/>
+                <path d="M2 10V2h8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              </svg>
+              Copy
+            </button>
+            <button class="btn btn-sm btn-outline" id="downloadBtn" hidden>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M7 2v7M4 7l3 3 3-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M2 11h10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              </svg>
+              Download
+            </button>
+            <button class="btn btn-sm btn-ghost" id="resetBtn">
+              New Review
+            </button>
+          </div>
+        </div>
+
+        <!-- Paper chips -->
+        <div class="paper-chips" id="paperChips"></div>
+
+        <!-- The review text -->
+        <div class="review-body" id="reviewBody"></div>
+      </section>
+    </main>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
