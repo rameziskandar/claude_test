@@ -6,7 +6,7 @@ from typing import Optional
 from pathlib import Path
 
 import anthropic
-import pdfplumber
+import fitz  # PyMuPDF
 from fastapi import FastAPI, File, UploadFile, HTTPException, Form
 from fastapi.responses import StreamingResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
@@ -46,12 +46,12 @@ def extract_text_from_pdf(file_bytes: bytes, filename: str) -> dict:
     metadata = {}
 
     try:
-        with pdfplumber.open(io.BytesIO(file_bytes)) as pdf:
-            metadata = pdf.metadata or {}
-            for page in pdf.pages:
-                text = page.extract_text()
-                if text:
-                    text_pages.append(text.strip())
+        doc = fitz.open(stream=file_bytes, filetype="pdf")
+        metadata = doc.metadata or {}
+        for page in doc:
+            text = page.get_text()
+            if text:
+                text_pages.append(text.strip())
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Failed to parse PDF '{filename}': {str(e)}")
 
@@ -61,8 +61,8 @@ def extract_text_from_pdf(file_bytes: bytes, filename: str) -> dict:
     if len(full_text) > 15000:
         full_text = full_text[:15000] + "\n\n[... text truncated for length ...]"
 
-    title = metadata.get("Title") or filename.replace(".pdf", "").replace("_", " ").replace("-", " ").title()
-    author = metadata.get("Author", "Unknown Author")
+    title = metadata.get("title") or filename.replace(".pdf", "").replace("_", " ").replace("-", " ").title()
+    author = metadata.get("author", "Unknown Author")
 
     return {
         "filename": filename,
